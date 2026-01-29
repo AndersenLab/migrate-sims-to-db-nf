@@ -1,0 +1,12 @@
+# nextflow
+.nextflow.log
+.nextflow.log.*
+.nextflow/
+work/
+
+# databases
+ctr_test_db
+results/
+
+# DS_Store
+.DS_Store
