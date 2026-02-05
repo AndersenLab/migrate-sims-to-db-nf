@@ -16,7 +16,8 @@ process WRITE_MARKER_SET {
 
     script:
     """
-    Rscript --vanilla ${projectDir}/bin/write_marker_set.R \\
+    export R_SOURCE_DIR="${projectDir}/R"
+    write_marker_set.R \\
         ${sample_file} \\
         ${population} \\
         ${maf} \\

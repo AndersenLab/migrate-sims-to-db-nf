@@ -22,7 +22,8 @@ process ANALYZE_QTL_BATCH {
 
     script:
     """
-    Rscript ${projectDir}/bin/analyze_qtl_batch.R \
+    export R_SOURCE_DIR="${projectDir}/R"
+    analyze_qtl_batch.R \
         --population '${population}' \
         --algorithm '${algorithm}' \
         --mapping_db ${mapping_db} \

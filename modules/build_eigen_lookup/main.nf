@@ -3,7 +3,7 @@
  */
 
 process BUILD_EIGEN_LOOKUP {
-    label 'local_process'
+    label 'discovery_process'
     tag "eigen_lookup"
 
     input:
@@ -14,7 +14,8 @@ process BUILD_EIGEN_LOOKUP {
 
     script:
     """
-    Rscript --vanilla ${projectDir}/bin/build_eigen_lookup.R ${search_dir}
+    export R_SOURCE_DIR="${projectDir}/R"
+    build_eigen_lookup.R ${search_dir}
     """
 
     stub:

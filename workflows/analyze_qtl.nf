@@ -5,8 +5,13 @@
  * Re-runs QTL analysis on an existing mapping database with different parameters.
  * Use this to explore different CI sizes or SNP grouping distances.
  *
+ * IMPORTANT: Must be run from the project root directory, or with explicit
+ * config to enable module binaries:
+ *   nextflow run workflows/analyze_qtl.nf -c nextflow.config --mapping_db /path/to/db
+ *
  * Usage:
- *   nextflow run migrate-to-db-nf/workflows/analyze_qtl.nf \
+ *   cd migrate-to-db-nf
+ *   nextflow run workflows/analyze_qtl.nf \
  *       --mapping_db /path/to/existing/db \
  *       --output /path/to/qtl_output \
  *       --ci_size 200 \

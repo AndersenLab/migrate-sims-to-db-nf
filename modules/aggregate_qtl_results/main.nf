@@ -22,7 +22,8 @@ process AGGREGATE_QTL_RESULTS {
 
     script:
     """
-    Rscript ${projectDir}/bin/aggregate_qtl_results.R \
+    export R_SOURCE_DIR="${projectDir}/R"
+    aggregate_qtl_results.R \
         --qtl_dir '${qtl_output}' \
         --alpha ${alpha} \
         --ci_size ${ci_size} \

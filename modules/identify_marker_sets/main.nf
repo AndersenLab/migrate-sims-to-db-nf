@@ -3,7 +3,7 @@
  */
 
 process IDENTIFY_MARKER_SETS {
-    label 'local_process'
+    label 'discovery_process'
     tag "marker_sets"
 
     input:
@@ -14,7 +14,7 @@ process IDENTIFY_MARKER_SETS {
 
     script:
     """
-    Rscript --vanilla ${projectDir}/bin/identify_marker_sets.R ${mapping_files_csv}
+    identify_marker_sets.R ${mapping_files_csv}
     """
 
     stub:

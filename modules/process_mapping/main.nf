@@ -15,7 +15,8 @@ process PROCESS_MAPPING {
 
     script:
     """
-    Rscript --vanilla ${projectDir}/bin/process_single_mapping.R ${mapping_file} ${base_dir}
+    export R_SOURCE_DIR="${projectDir}/R"
+    process_single_mapping.R ${mapping_file} ${base_dir}
     """
 
     stub:

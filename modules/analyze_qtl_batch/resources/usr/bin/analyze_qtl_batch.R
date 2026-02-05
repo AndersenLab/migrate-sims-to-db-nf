@@ -77,25 +77,22 @@ if (is.null(opt$algorithm)) stop("Error: --algorithm is required")
 if (is.null(opt$mapping_db)) stop("Error: --mapping_db is required")
 if (is.null(opt$qtl_output)) stop("Error: --qtl_output is required")
 
-# Source R modules - get script directory from commandArgs when run via Rscript
-get_script_dir <- function() {
-  args <- commandArgs(trailingOnly = FALSE)
-  file_arg <- grep("^--file=", args, value = TRUE)
-  if (length(file_arg) > 0) {
-    return(dirname(sub("^--file=", "", file_arg)))
-  }
-  # Fallback to current directory
-  return(".")
+# Source R modules - R_SOURCE_DIR env var is required (set by Nextflow process script block)
+# For standalone usage: R_SOURCE_DIR=./R Rscript analyze_qtl_batch.R <args>
+r_source_dir <- Sys.getenv("R_SOURCE_DIR", unset = "")
+if (r_source_dir == "") {
+  stop("R_SOURCE_DIR environment variable must be set. Example: R_SOURCE_DIR=./R Rscript analyze_qtl_batch.R <args>")
 }
-script_dir <- get_script_dir()
-r_dir <- file.path(dirname(script_dir), "R")
+if (!dir.exists(r_source_dir)) {
+  stop(paste("R_SOURCE_DIR does not exist:", r_source_dir))
+}
 
-source(file.path(r_dir, "utils.R"))
-source(file.path(r_dir, "io.R"))
-source(file.path(r_dir, "database.R"))
-source(file.path(r_dir, "queries.R"))
-source(file.path(r_dir, "analysis.R"))
-source(file.path(r_dir, "qtl_database.R"))
+source(file.path(r_source_dir, "utils.R"))
+source(file.path(r_source_dir, "io.R"))
+source(file.path(r_source_dir, "database.R"))
+source(file.path(r_source_dir, "queries.R"))
+source(file.path(r_source_dir, "analysis.R"))
+source(file.path(r_source_dir, "qtl_database.R"))
 
 # Main logic
 population <- opt$population
