@@ -12,13 +12,18 @@ if (length(args) < 1) {
 
 search_dir <- args[1]
 
-# Source R modules
-script_dir <- dirname(sub("--file=", "", grep("--file=", commandArgs(FALSE), value = TRUE)))
-if (length(script_dir) == 0) script_dir <- "."
-project_root <- normalizePath(file.path(script_dir, ".."))
+# Source R modules - R_SOURCE_DIR env var is required (set by Nextflow process script block)
+# For standalone usage: R_SOURCE_DIR=./R Rscript build_eigen_lookup.R <args>
+r_source_dir <- Sys.getenv("R_SOURCE_DIR", unset = "")
+if (r_source_dir == "") {
+  stop("R_SOURCE_DIR environment variable must be set. Example: R_SOURCE_DIR=./R Rscript build_eigen_lookup.R <args>")
+}
+if (!dir.exists(r_source_dir)) {
+  stop(paste("R_SOURCE_DIR does not exist:", r_source_dir))
+}
 
-source(file.path(project_root, "R/utils.R"))
-source(file.path(project_root, "R/io.R"))
+source(file.path(r_source_dir, "utils.R"))
+source(file.path(r_source_dir, "io.R"))
 
 # Search multiple locations for EIGEN files
 search_dirs <- c(

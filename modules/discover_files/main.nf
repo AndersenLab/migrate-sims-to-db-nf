@@ -3,7 +3,7 @@
  */
 
 process DISCOVER_MAPPING_FILES {
-    label 'local_process'
+    label 'discovery_process'
     tag "discover"
 
     input:
@@ -14,7 +14,8 @@ process DISCOVER_MAPPING_FILES {
 
     script:
     """
-    Rscript --vanilla ${projectDir}/bin/discover_mapping_files.R ${input_dir}
+    export R_SOURCE_DIR="${projectDir}/R"
+    discover_mapping_files.R ${input_dir}
     """
 
     stub:

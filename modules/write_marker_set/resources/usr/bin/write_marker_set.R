@@ -16,14 +16,19 @@ maf <- as.numeric(args[3])
 base_dir <- args[4]
 eigen_lookup_file <- if (length(args) >= 5) args[5] else NULL
 
-# Source R modules
-script_dir <- dirname(sub("--file=", "", grep("--file=", commandArgs(FALSE), value = TRUE)))
-if (length(script_dir) == 0) script_dir <- "."
-project_root <- normalizePath(file.path(script_dir, ".."))
+# Source R modules - R_SOURCE_DIR env var is required (set by Nextflow process script block)
+# For standalone usage: R_SOURCE_DIR=./R Rscript write_marker_set.R <args>
+r_source_dir <- Sys.getenv("R_SOURCE_DIR", unset = "")
+if (r_source_dir == "") {
+  stop("R_SOURCE_DIR environment variable must be set. Example: R_SOURCE_DIR=./R Rscript write_marker_set.R <args>")
+}
+if (!dir.exists(r_source_dir)) {
+  stop(paste("R_SOURCE_DIR does not exist:", r_source_dir))
+}
 
-source(file.path(project_root, "R/utils.R"))
-source(file.path(project_root, "R/io.R"))
-source(file.path(project_root, "R/database.R"))
+source(file.path(r_source_dir, "utils.R"))
+source(file.path(r_source_dir, "io.R"))
+source(file.path(r_source_dir, "database.R"))
 
 # Initialize database
 init_database(base_dir)

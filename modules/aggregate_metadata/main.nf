@@ -17,7 +17,8 @@ process AGGREGATE_METADATA {
 
     script:
     """
-    Rscript --vanilla ${projectDir}/bin/aggregate_metadata.R ${base_dir}
+    export R_SOURCE_DIR="${projectDir}/R"
+    aggregate_metadata.R ${base_dir}
     """
 
     stub:
