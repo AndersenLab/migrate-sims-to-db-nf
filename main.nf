@@ -127,7 +127,7 @@ workflow {
     // Parse mapping_files.csv to create channel of file paths
     ch_mapping_files = DISCOVER_MAPPING_FILES.out.mapping_files
         .splitCsv(header: true)
-        .filter { row -> row.population != null && row.population != '' }
+        .filter { row -> row.population != null && row.population != '' && row.population != 'NA' }
         .map { row -> file(row.file_path) }
 
     // Wait for marker sets to be written before processing mappings
