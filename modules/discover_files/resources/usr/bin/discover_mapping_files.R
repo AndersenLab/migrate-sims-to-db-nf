@@ -74,14 +74,19 @@ if (length(mapping_files) == 0) {
       )
     }
   }))
+
+  # Filter out files that couldn't be parsed
+  unparseable_mask <- is.na(result$population)
+  if (any(unparseable_mask)) {
+    skipped <- result$filename[unparseable_mask]
+    cat("WARNING: Skipping", sum(unparseable_mask), "files that could not be parsed:\n")
+    for (f in skipped) {
+      cat("  -", f, "\n")
+    }
+    result <- result[!unparseable_mask, , drop = FALSE]
+  }
 }
 
 # Write output (use write.table to avoid quoting header names which can confuse Nextflow)
 write.table(result, "mapping_files.csv", sep = ",", row.names = FALSE, quote = FALSE)
 cat("Output written to mapping_files.csv\n")
-
-# Report any files that couldn't be parsed
-unparseable <- sum(is.na(result$population))
-if (unparseable > 0) {
-  warning(paste(unparseable, "files could not be parsed"))
-}
